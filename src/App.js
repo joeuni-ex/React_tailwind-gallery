@@ -1,4 +1,24 @@
-function useStateApp() {
+import { useEffect, useState } from "react";
+
+function App() {
+  const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [term, setTerm] = useState("flowers"); //검색어
+
+  //처음에 한 번만 실행
+  //사진 가져옴
+  useEffect(() => {
+    fetch(
+      `https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${term}&image_type=photo`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.hits);
+        setImages(data.hits);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg">
       <img src="https://source.unsplash.com/random" alt="" className="w-full" />
