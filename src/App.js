@@ -7,7 +7,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [term, setTerm] = useState("flowers"); //검색어
 
-  //처음에 한 번만 실행
   //사진 가져옴
   useEffect(() => {
     fetch(
@@ -19,11 +18,14 @@ function App() {
         setImages(data.hits);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [term]);
 
   return (
     <div className="container mx-auto my-7">
-      <ImageSearch />
+      <ImageSearch setTerm={setTerm} />
+      {images.length === 0 && (
+        <h5 className="text-5xl text-center mt-32">이미지 결과가 없습니다.</h5>
+      )}
       <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-7">
         {images.map((image) => (
           <ImageCard key={image.id} image={image} />
